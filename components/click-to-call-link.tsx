@@ -7,6 +7,7 @@ import { trackEvent } from "@/lib/analytics";
 type ClickToCallLinkProps = {
   children: React.ReactNode;
   className?: string;
+  style?: React.CSSProperties;
   href: string;
   location: string;
 };
@@ -14,6 +15,7 @@ type ClickToCallLinkProps = {
 export function ClickToCallLink({
   children,
   className,
+  style,
   href,
   location,
 }: ClickToCallLinkProps) {
@@ -21,6 +23,7 @@ export function ClickToCallLink({
     <Link
       href={href}
       className={className}
+      style={style}
       onClick={() =>
         trackEvent("click_to_call", {
           event_category: "engagement",
