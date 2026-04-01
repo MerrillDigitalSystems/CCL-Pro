@@ -3,7 +3,9 @@ import Link from "next/link";
 
 import { ClickToCallLink } from "@/components/click-to-call-link";
 import { ContactForm } from "@/components/contact-form";
-import { reviewPlaceholders, services, siteConfig } from "@/lib/site";
+import { Carousel } from "@/components/carousel";
+import { BeforeAfterSlider } from "@/components/before-after-slider";
+import { reviewPlaceholders, services, siteConfig, heroImages, galleryItems } from "@/lib/site";
 
 const stats = [
   { value: "6+", label: "Services Offered" },
@@ -35,14 +37,6 @@ const process = [
   },
 ];
 
-const galleryPlaceholders = [
-  { location: "Provo, UT", service: "Lawn Maintenance", tag: "Before & After" },
-  { location: "Orem, UT", service: "Sprinkler Repair", tag: "Irrigation System" },
-  { location: "Lehi, UT", service: "Seasonal Clean-up", tag: "Fall Clean-up" },
-  { location: "American Fork, UT", service: "Design & Install", tag: "Landscape Design" },
-  { location: "Pleasant Grove, UT", service: "Rain Gutter Cleaning", tag: "Gutter Service" },
-  { location: "Utah County, UT", service: "Tree & Bush Removal", tag: "Yard Hauling" },
-];
 
 const whyUs = [
   {
@@ -104,15 +98,32 @@ export default function Home() {
 
       {/* Hero */}
       <section className="relative isolate overflow-hidden bg-charcoal">
-        <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/55 to-black/25" />
-        <Image
-          src="/landscaping-hero.svg"
-          alt="Nic Walker landscaping crew preparing a Utah lawn and sprinkler system for seasonal service"
-          fill
-          priority
-          sizes="100vw"
-          className="-z-10 object-cover object-center opacity-60"
-        />
+        <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/55 to-black/25 z-10" />
+        
+        {/* Hero Background Carousel */}
+        <div className="absolute inset-0 -z-10">
+          <Carousel 
+            autoPlay 
+            loop 
+            showArrows={false}
+            containerClassName="flex touch-pan-y h-full"
+            slideClassName="flex-[0_0_100%] min-w-0 h-full"
+          >
+            {heroImages.map((src, idx) => (
+              <div key={idx} className="relative w-full h-[42rem] sm:h-[50rem] lg:h-[60rem]">
+                <Image
+                  src={src}
+                  alt={`Landscaping work by ${siteConfig.shortName}`}
+                  fill
+                  priority={idx === 0}
+                  sizes="100vw"
+                  className="object-cover object-center opacity-60"
+                />
+              </div>
+            ))}
+          </Carousel>
+        </div>
+
         <div className="mx-auto grid min-h-[42rem] max-w-7xl items-center gap-12 px-6 py-20 lg:grid-cols-[1.1fr_0.9fr] lg:px-8">
           <div className="relative z-10 max-w-3xl">
             <p className="mb-4 text-sm font-semibold tracking-[0.3em] text-primary uppercase">
@@ -249,7 +260,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Project gallery — inspired by Chopper Landscaping */}
+      {/* Project gallery */}
       <section className="bg-charcoal py-20" id="gallery">
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
           <div className="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
@@ -262,34 +273,41 @@ export default function Home() {
               </h2>
             </div>
             <p className="max-w-sm text-sm leading-7 text-stone-400">
-              Real project photos of Nic&apos;s work will appear here. Add before-and-after shots
-              from completed jobs to build immediate trust with local homeowners.
+              Real project photos and transformations from completed jobs across the valley.
             </p>
           </div>
-          <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {galleryPlaceholders.map((item) => (
-              <div
-                key={item.location}
-                className="group relative aspect-[4/3] overflow-hidden rounded-2xl bg-stone-800"
-              >
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <p className="text-xs font-semibold tracking-widest text-stone-600 uppercase">
-                    Add Photo Here
-                  </p>
+          <div className="mt-10">
+            <Carousel>
+              {galleryItems.map((item, idx) => (
+                <div key={idx} className="group relative aspect-[4/3] sm:aspect-[16/9] lg:aspect-[4/3] overflow-hidden rounded-2xl bg-stone-800 flex flex-col h-full pointer-events-auto">
+                  {item.type === "before-after" ? (
+                    <BeforeAfterSlider
+                      beforeImage={item.beforeSrc}
+                      afterImage={item.afterSrc}
+                      alt={item.alt}
+                    />
+                  ) : (
+                    <div className="relative w-full h-full">
+                      <Image
+                        src={item.src}
+                        alt={item.alt}
+                        fill
+                        className="object-cover"
+                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                      />
+                    </div>
+                  )}
+                  <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent p-5 pointer-events-none">
+                    <span className="inline-block rounded-full bg-primary/90 px-3 py-1 text-xs font-bold text-stone-950">
+                      {item.tag}
+                    </span>
+                    <p className="mt-2 text-sm font-semibold text-white">{item.service}</p>
+                    <p className="text-xs text-stone-400">{item.location}</p>
+                  </div>
                 </div>
-                <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent p-5">
-                  <span className="inline-block rounded-full bg-primary/90 px-3 py-1 text-xs font-bold text-stone-950">
-                    {item.tag}
-                  </span>
-                  <p className="mt-2 text-sm font-semibold text-white">{item.service}</p>
-                  <p className="text-xs text-stone-400">{item.location}</p>
-                </div>
-              </div>
-            ))}
+              ))}
+            </Carousel>
           </div>
-          <p className="mt-6 text-center text-xs text-stone-600">
-            Replace placeholder tiles with real project photos — organized by city for local SEO relevance.
-          </p>
         </div>
       </section>
 
@@ -478,6 +496,9 @@ export default function Home() {
             </a>
             <p className="mt-4 text-sm uppercase tracking-[0.25em] text-stone-500">
               © {new Date().getFullYear()} Complete Care Landscaping Pro
+            </p>
+            <p className="mt-2 text-xs text-stone-500">
+              Created by <a href="https://merrilldigitalsystems.com" target="_blank" rel="noopener noreferrer" className="hover:text-primary transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary">Merrill Digital Systems</a>
             </p>
           </div>
         </div>

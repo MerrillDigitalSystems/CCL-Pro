@@ -72,6 +72,158 @@ export const trustPoints = [
   "Fast estimates for Utah homeowners and property managers",
 ] as const;
 
+export const heroImages = [
+  "/After/YinYangAfter.jpg",
+  "/After/PondAfter.jpg",
+  "/After/DeckAfter.jpg",
+  "/Sprinklers/SprinklerWork1.jpg",
+];
+
+export type GalleryItem = 
+  | { type: "image"; src: string; alt: string; tag: string; service: string; location: string }
+  | { type: "before-after"; beforeSrc: string; afterSrc: string; alt: string; tag: string; service: string; location: string };
+
+export const galleryItems: GalleryItem[] = [
+  {
+    type: "before-after",
+    beforeSrc: "/Before/YinYangBefore.jpg",
+    afterSrc: "/After/YinYangAfter.jpg",
+    alt: "Yin Yang landscaping transformation",
+    tag: "Before & After",
+    service: "Landscape Design & Install",
+    location: "Utah County, UT",
+  },
+  {
+    type: "before-after",
+    beforeSrc: "/Before/PondBefore.jpg",
+    afterSrc: "/After/PondAfter.jpg",
+    alt: "Pond area cleanup",
+    tag: "Before & After",
+    service: "Seasonal Clean-up",
+    location: "Provo, UT",
+  },
+  {
+    type: "before-after",
+    beforeSrc: "/Before/DeckBefore.jpg",
+    afterSrc: "/After/DeckAfter.jpg",
+    alt: "Deck area landscaping",
+    tag: "Before & After",
+    service: "Landscape Design",
+    location: "Orem, UT",
+  },
+  {
+    type: "image",
+    src: "/Sprinklers/SprinklerWork.jpg",
+    alt: "Complex sprinkler system installation",
+    tag: "Irrigation System",
+    service: "Sprinkler Repair",
+    location: "Lehi, UT",
+  },
+  {
+    type: "before-after",
+    beforeSrc: "/Before/StorageBefore.jpg",
+    afterSrc: "/After/SelfStorageAfter.jpg",
+    alt: "Commercial storage facility cleanup",
+    tag: "Before & After",
+    service: "Commercial Maintenance",
+    location: "American Fork, UT",
+  },
+  {
+    type: "before-after",
+    beforeSrc: "/Before/BushBefore.jpg",
+    afterSrc: "/After/BushAfter.jpg",
+    alt: "Bush removal and cleanup",
+    tag: "Before & After",
+    service: "Tree & Bush Removal",
+    location: "Pleasant Grove, UT",
+  },
+  {
+    type: "image",
+    src: "/Sprinklers/SprinklerWork2.jpg",
+    alt: "Sprinkler manifold and valves",
+    tag: "Irrigation System",
+    service: "Sprinkler Repair",
+    location: "Utah County, UT",
+  },
+  {
+    type: "before-after",
+    beforeSrc: "/Before/RockBefore.jpg",
+    afterSrc: "/After/RockAfter.jpg",
+    alt: "Rock bed installation",
+    tag: "Before & After",
+    service: "Landscape Design",
+    location: "Provo, UT",
+  },
+  {
+    type: "before-after",
+    beforeSrc: "/Before/StripBefore.jpg",
+    afterSrc: "/After/StripAfter.jpg",
+    alt: "Park strip transformation",
+    tag: "Before & After",
+    service: "Landscape Design",
+    location: "Orem, UT",
+  },
+  {
+    type: "image",
+    src: "/647379688_122231100932491126_1683581499259921498_n.jpg",
+    alt: "Finished landscaping project",
+    tag: "Completed Project",
+    service: "Lawn Maintenance",
+    location: "Lehi, UT",
+  },
+  {
+    type: "before-after",
+    beforeSrc: "/Before/412Before.jpg",
+    afterSrc: "/After/412After.jpg",
+    alt: "Yard transformation",
+    tag: "Before & After",
+    service: "Seasonal Clean-up",
+    location: "American Fork, UT",
+  },
+  {
+    type: "before-after",
+    beforeSrc: "/Before/12Before.jpg",
+    afterSrc: "/After/12After.jpg",
+    alt: "Lawn and garden transformation",
+    tag: "Before & After",
+    service: "Landscape Design",
+    location: "Provo, UT",
+  },
+  {
+    type: "before-after",
+    beforeSrc: "/Before/BlueRedBefore.jpg",
+    afterSrc: "/After/BlueRedAfter.jpg",
+    alt: "Flower bed update",
+    tag: "Before & After",
+    service: "Landscape Design",
+    location: "Orem, UT",
+  },
+  {
+    type: "image",
+    src: "/559405747_122202467588491126_6800893402414010461_n.jpg",
+    alt: "Finished landscaping project",
+    tag: "Completed Project",
+    service: "Lawn Maintenance",
+    location: "Utah County, UT",
+  },
+  {
+    type: "image",
+    src: "/559189680_122202467330491126_2679529573008008689_n.jpg",
+    alt: "Finished landscaping project",
+    tag: "Completed Project",
+    service: "Lawn Maintenance",
+    location: "Salt Lake County, UT",
+  },
+  {
+    type: "image",
+    src: "/Sprinklers/651105889_122232604394491126_7857425332019038658_n.jpg",
+    alt: "Sprinkler installation",
+    tag: "Irrigation System",
+    service: "Sprinkler Repair",
+    location: "Lehi, UT",
+  },
+];
+
 export const reviewPlaceholders = [
   {
     name: "Google Business Profile",
