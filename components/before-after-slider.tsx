@@ -1,8 +1,6 @@
 "use client";
 
-import { useState, useRef, useEffect, useCallback } from "react";
 import Image from "next/image";
-import { GripVertical } from "lucide-react";
 
 interface BeforeAfterSliderProps {
   beforeImage: string;
@@ -19,68 +17,9 @@ export function BeforeAfterSlider({
   afterLabel = "After",
   alt = "Before and after comparison",
 }: BeforeAfterSliderProps) {
-  const [sliderPosition, setSliderPosition] = useState(50);
-  const [isDragging, setIsDragging] = useState(false);
-  const containerRef = useRef<HTMLDivElement>(null);
-
-  const handleMove = useCallback((clientX: number) => {
-    if (!containerRef.current) return;
-    const rect = containerRef.current.getBoundingClientRect();
-    const x = Math.max(0, Math.min(clientX - rect.left, rect.width));
-    const percent = Math.max(0, Math.min((x / rect.width) * 100, 100));
-    setSliderPosition(percent);
-  }, []);
-
-  useEffect(() => {
-    if (!isDragging) return;
-
-    const handleMouseMove = (e: MouseEvent) => {
-      e.preventDefault();
-      handleMove(e.clientX);
-    };
-    const handleTouchMove = (e: TouchEvent) => {
-      // Prevent default to stop scrolling while dragging the slider
-      if (e.cancelable) {
-        e.preventDefault();
-      }
-      handleMove(e.touches[0].clientX);
-    };
-    const handleInteractionEnd = () => setIsDragging(false);
-
-    // Attach to window to capture drags outside the element
-    window.addEventListener("mousemove", handleMouseMove, { passive: false });
-    window.addEventListener("touchmove", handleTouchMove, { passive: false });
-    window.addEventListener("mouseup", handleInteractionEnd);
-    window.addEventListener("touchend", handleInteractionEnd);
-
-    return () => {
-      window.removeEventListener("mousemove", handleMouseMove);
-      window.removeEventListener("touchmove", handleTouchMove);
-      window.removeEventListener("mouseup", handleInteractionEnd);
-      window.removeEventListener("touchend", handleInteractionEnd);
-    };
-  }, [isDragging, handleMove]);
-
   return (
-    <div
-      ref={containerRef}
-      className="slider-container relative w-full h-full overflow-hidden rounded-2xl select-none group cursor-ew-resize touch-none"
-      onMouseDown={(e) => {
-        setIsDragging(true);
-        handleMove(e.clientX);
-      }}
-      onTouchStart={(e) => {
-        setIsDragging(true);
-        handleMove(e.touches[0].clientX);
-      }}
-      onPointerDown={(e) => {
-        e.stopPropagation();
-      }}
-      onPointerMove={(e) => {
-        e.stopPropagation();
-      }}
-    >
-      {/* After Image (Background) */}
+    <div className="slider-container relative w-full h-full overflow-hidden rounded-2xl group">
+      {/* After Image (Background layer) */}
       <Image
         src={afterImage}
         alt={`${alt} - ${afterLabel}`}
@@ -88,16 +27,15 @@ export function BeforeAfterSlider({
         className="object-cover pointer-events-none"
         sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
       />
-      
+
       {/* After Label */}
-      <div className="absolute top-4 right-4 bg-black/60 text-white px-3 py-1 rounded-full text-xs font-semibold backdrop-blur-sm pointer-events-none">
+      <div className="absolute top-4 right-4 bg-black/60 text-white px-3 py-1 rounded-full text-xs font-semibold backdrop-blur-sm pointer-events-none z-10">
         {afterLabel}
       </div>
 
-      {/* Before Image (Foreground, clipped) */}
+      {/* Before Image (clipped via CSS custom property) */}
       <div
-        className="absolute inset-0 pointer-events-none"
-        style={{ clipPath: `inset(0 ${100 - sliderPosition}% 0 0)` }}
+        className="absolute inset-0 pointer-events-none before-clip"
       >
         <Image
           src={beforeImage}
@@ -112,16 +50,77 @@ export function BeforeAfterSlider({
         </div>
       </div>
 
-      {/* Slider Line */}
-      <div
-        className="absolute top-0 bottom-0 w-1 bg-white cursor-ew-resize flex items-center justify-center shadow-[0_0_10px_rgba(0,0,0,0.5)] z-10 pointer-events-none"
-        style={{ left: `calc(${sliderPosition}% - 2px)` }}
-      >
-        {/* Slider Handle */}
-        <div className="w-8 h-8 bg-white rounded-full flex items-center justify-center shadow-lg text-stone-600 hover:scale-110 transition-transform duration-200 pointer-events-auto cursor-ew-resize">
-          <GripVertical size={16} />
-        </div>
+      {/* Slider divider line - positioned via CSS custom property */}
+      <div className="slider-line absolute top-0 bottom-0 w-0.5 bg-white z-20 pointer-events-none" />
+
+      {/* Slider handle - positioned via CSS custom property */}
+      <div className="slider-handle absolute top-1/2 -translate-y-1/2 -translate-x-1/2 w-8 h-8 bg-white rounded-full flex items-center justify-center shadow-lg text-stone-600 z-20 pointer-events-none">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <line x1="9" y1="4" x2="9" y2="20" />
+          <line x1="15" y1="4" x2="15" y2="20" />
+          <polyline points="4 8 1 12 4 16" />
+          <polyline points="20 8 23 12 20 16" />
+        </svg>
       </div>
+
+      {/* Native range input - this is the actual interactive element */}
+      <input
+        type="range"
+        min="0"
+        max="100"
+        defaultValue="50"
+        aria-label="Slide to compare before and after"
+        className="slider-range absolute inset-0 w-full h-full z-30 cursor-ew-resize"
+      />
+
+      <style jsx>{`
+        .slider-container {
+          --pos: 50%;
+        }
+        .before-clip {
+          clip-path: inset(0 calc(100% - var(--pos)) 0 0);
+        }
+        .slider-line {
+          left: var(--pos);
+        }
+        .slider-handle {
+          left: var(--pos);
+        }
+        .slider-range {
+          opacity: 0;
+          margin: 0;
+          -webkit-appearance: none;
+          appearance: none;
+        }
+        .slider-range::-webkit-slider-thumb {
+          -webkit-appearance: none;
+          width: 2px;
+          height: 100%;
+          cursor: ew-resize;
+        }
+        .slider-range::-moz-range-thumb {
+          width: 2px;
+          height: 100%;
+          cursor: ew-resize;
+          border: none;
+          background: transparent;
+        }
+      `}</style>
+
+      <script
+        dangerouslySetInnerHTML={{
+          __html: `
+            (function() {
+              var container = document.currentScript.parentElement;
+              var input = container.querySelector('.slider-range');
+              if (!input) return;
+              input.addEventListener('input', function() {
+                container.style.setProperty('--pos', this.value + '%');
+              });
+            })();
+          `,
+        }}
+      />
     </div>
   );
 }
