@@ -5,7 +5,7 @@ import { ClickToCallLink } from "@/components/click-to-call-link";
 import { ContactForm } from "@/components/contact-form";
 import { Carousel } from "@/components/carousel";
 import { BeforeAfterSlider } from "@/components/before-after-slider";
-import { reviewPlaceholders, services, siteConfig, heroImages, galleryItems } from "@/lib/site";
+import { services, siteConfig, heroImages, galleryItems } from "@/lib/site";
 
 const stats = [
   { value: "6+", label: "Services Offered" },
@@ -152,31 +152,29 @@ export default function Home() {
             </div>
           </div>
 
-          <div className="relative z-10 rounded-[2rem] border border-white/10 bg-white/10 p-6 shadow-2xl shadow-black/30 backdrop-blur-md">
-            <div className="rounded-[1.5rem] bg-white p-6 text-stone-950">
-              <p className="text-sm font-semibold tracking-[0.25em] text-primary uppercase">
-                Free Estimate
-              </p>
-              <h2 className="mt-3 text-3xl font-bold">Ready for a better yard?</h2>
-              <p className="mt-3 text-base leading-7 text-stone-600">
-                Call {siteConfig.owner} directly or send a message below. Most requests
-                get a same-day response.
-              </p>
-              <div className="mt-6 space-y-3">
-                <ClickToCallLink
-                  href={siteConfig.phoneHref}
-                  location="hero"
-                  className="inline-flex w-full items-center justify-center rounded-full bg-charcoal px-6 py-3 text-base font-semibold text-white transition hover:bg-primary hover:text-stone-950 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-charcoal"
-                >
-                  Call {siteConfig.phoneDisplay}
-                </ClickToCallLink>
-                <a
-                  href={siteConfig.emailHref}
-                  className="inline-flex w-full items-center justify-center rounded-full border border-stone-300 px-6 py-3 text-base font-semibold text-stone-700 transition hover:border-primary hover:text-stone-950 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
-                >
-                  Email {siteConfig.email}
-                </a>
-              </div>
+          <div className="relative z-10 rounded-[2rem] bg-white p-8 shadow-2xl shadow-black/50">
+            <p className="text-sm font-semibold tracking-[0.25em] text-primary uppercase">
+              Free Estimate
+            </p>
+            <h2 className="mt-3 text-3xl font-bold text-stone-950">Ready for a better yard?</h2>
+            <p className="mt-3 text-base leading-7 text-stone-600">
+              Call {siteConfig.owner} directly or send a message below. Most requests
+              get a same-day response.
+            </p>
+            <div className="mt-6 space-y-3">
+              <ClickToCallLink
+                href={siteConfig.phoneHref}
+                location="hero"
+                className="inline-flex w-full items-center justify-center rounded-full bg-charcoal px-6 py-3 text-base font-semibold text-white transition-colors hover:bg-primary hover:text-stone-950 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-charcoal"
+              >
+                Call {siteConfig.phoneDisplay}
+              </ClickToCallLink>
+              <a
+                href={siteConfig.emailHref}
+                className="inline-flex w-full items-center justify-center rounded-full border border-stone-300 px-6 py-3 text-base font-semibold text-stone-700 transition-colors hover:border-primary hover:text-stone-950 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+              >
+                Email {siteConfig.email}
+              </a>
             </div>
           </div>
         </div>
@@ -188,7 +186,7 @@ export default function Home() {
           {stats.map((stat) => (
             <div key={stat.label} className="px-6 py-8 text-center">
               <p className="text-4xl font-black text-primary">{stat.value}</p>
-              <p className="mt-1 text-xs font-semibold tracking-[0.2em] text-stone-400 uppercase">{stat.label}</p>
+              <p className="mt-1 text-xs font-semibold tracking-[0.2em] text-stone-500 uppercase">{stat.label}</p>
             </div>
           ))}
         </div>
@@ -213,7 +211,7 @@ export default function Home() {
             {services.map((service, i) => (
               <article
                 key={service.title}
-                className="rounded-3xl border-b-4 border-primary bg-white p-8 shadow-lg shadow-black/5 transition hover:-translate-y-1"
+                className="rounded-3xl border-b-4 border-primary bg-white p-8 shadow-lg shadow-black/5 transition-transform duration-200 hover:-translate-y-1"
               >
                 <span className="text-3xl font-black tabular-nums text-primary/20">
                   {String(i + 1).padStart(2, "0")}
@@ -399,31 +397,28 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Reviews */}
+      {/* Reviews / Social proof CTA */}
       <section className="bg-section py-20">
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
-          <div className="mx-auto mb-12 max-w-3xl text-center">
+          <div className="mx-auto max-w-2xl text-center">
             <p className="text-sm font-semibold tracking-[0.3em] text-primary uppercase">
-              Customer Reviews
+              Google Reviews
             </p>
             <h2 className="mt-4 text-4xl font-bold tracking-tight text-stone-950">
-              What homeowners are saying.
+              Helped by C.C.L. Pro? Let others know.
             </h2>
-            <p className="mt-4 text-lg leading-8 text-stone-600">
-              5-star Google reviews will appear here once the business profile is live and
-              customers have been asked to share their experience.
+            <p className="mt-6 text-lg leading-8 text-stone-600">
+              We&apos;re a local business building our reputation one project at a time.
+              If Nic worked on your property, a Google review helps other Utah homeowners find us.
             </p>
-          </div>
-          <div className="grid gap-6 lg:grid-cols-3">
-            {reviewPlaceholders.map((review) => (
-              <article key={review.name} className="rounded-3xl bg-white p-8 shadow-lg shadow-black/5">
-                <div className="mb-4 text-lg tracking-widest text-primary">★★★★★</div>
-                <p className="text-lg font-bold text-stone-950">{review.name}</p>
-                <p className="mt-4 leading-7 text-stone-600">
-                  &ldquo;{review.quote}&rdquo;
-                </p>
-              </article>
-            ))}
+            <a
+              href={`https://www.google.com/search?q=${encodeURIComponent("C.C.L. Pro Complete Care Landscaping Utah " + siteConfig.phoneDisplay)}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="mt-8 inline-flex items-center justify-center gap-2 rounded-full bg-primary px-8 py-4 text-base font-semibold text-stone-950 transition-colors hover:bg-charcoal hover:text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+            >
+              <span aria-hidden="true">★</span> Leave a Google Review
+            </a>
           </div>
         </div>
       </section>
